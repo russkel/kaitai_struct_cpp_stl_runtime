@@ -399,10 +399,14 @@ std::string kaitai::kstream::ensure_fixed_contents(std::string expected) {
 }
 
 std::string kaitai::kstream::bytes_strip_right(std::string src, char pad_byte) {
-    std::size_t new_len = src.length();
+    std::size_t max_len = src.length();
+    std::size_t new_len = max_len;
 
     while (new_len > 0 && src[new_len - 1] == pad_byte)
         new_len--;
+
+    if (new_len == max_len)
+        return src;
 
     return src.substr(0, new_len);
 }
@@ -416,6 +420,9 @@ std::string kaitai::kstream::bytes_terminate(std::string src, char term, bool in
 
     if (include && new_len < max_len)
         new_len++;
+
+    if (new_len == max_len)
+        return src;
 
     return src.substr(0, new_len);
 }
